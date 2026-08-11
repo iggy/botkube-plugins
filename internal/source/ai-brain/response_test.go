@@ -27,7 +27,7 @@ func TestConvertProperlyAIAnswer(t *testing.T) {
 		MessageID: "42.42",
 		Prompt:    "This is a test",
 	}, string(md), nil)
-	assertGolden(t, out.Sections[0].Base.Body.Plaintext, "slack.golden.md")
+	assertGolden(t, out.Sections[0].Body.Plaintext, "slack.golden.md")
 
 	// Teams
 	out = msgAIAnswer(&Payload{

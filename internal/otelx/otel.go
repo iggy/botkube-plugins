@@ -8,7 +8,7 @@ import (
 // Init initialises opentelemetry with honeycomb exporter. Returns a shutdown func.
 func Init(apiKey, serviceName string, sampleRate int, version string) (func(), error) {
 	return otelconfig.ConfigureOpenTelemetry(
-		otelconfig.WithSpanProcessor(honeycomb.NewBaggageSpanProcessor()),
+		otelconfig.WithSpanProcessor(honeycomb.NewBaggageSpanProcessor()), //nolint:staticcheck // no replacement available yet in the used OTel version
 		otelconfig.WithHeaders(map[string]string{"X-Honeycomb-Team": apiKey}),
 		otelconfig.WithServiceName(serviceName),
 		otelconfig.WithSampler(honeycomb.NewDeterministicSampler(sampleRate)),

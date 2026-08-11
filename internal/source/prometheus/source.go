@@ -76,6 +76,12 @@ func (p *Source) consumeAlerts(ctx context.Context, cfg Config, ch chan<- source
 	exitOnError(err, log)
 
 	for {
+		select {
+		case <-ctx.Done():
+			return
+		default:
+		}
+
 		alerts, err := prometheus.Alerts(ctx, GetAlertsRequest{
 			IgnoreOldAlerts: *cfg.IgnoreOldAlerts,
 			MinAlertTime:    p.startedAt,

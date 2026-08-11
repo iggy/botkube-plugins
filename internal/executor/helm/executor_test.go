@@ -112,12 +112,12 @@ func TestExecutorHelmInstallFlagsErrors(t *testing.T) {
 		{
 			name:         "report issue known but not supported flag",
 			inputCommand: "helm install https://charts.bitnami.com/bitnami/postgresql-12.1.0.tgz --generate-name --wait",
-			expErrMsg:    `The "--wait" flag is not supported by the Botkube Helm plugin. Please remove it.`,
+			expErrMsg:    `the "--wait" flag is not supported by the Botkube Helm plugin. Please remove it`,
 		},
 		{
 			name:         "install by OCI registry",
 			inputCommand: "helm install mynginx --version 1.2.3 oci://example.com/charts/nginx",
-			expErrMsg:    "Installing Helm chart from OCI registry is not supported.",
+			expErrMsg:    "installing Helm chart from OCI registry is not supported",
 		},
 	}
 	for _, tc := range tests {
@@ -265,7 +265,7 @@ func TestExecutorConfigMergingErrors(t *testing.T) {
 	})
 
 	// then
-	require.EqualError(t, err, "while merging input configs: while validating merged configuration: The unknown-value is invalid. Allowed values are configmap, secret, memory.")
+	require.EqualError(t, err, "while merging input configs: while validating merged configuration: the unknown-value is invalid. Allowed values are configmap, secret, memory")
 }
 func mustYAMLMarshal(t *testing.T, in any) []byte {
 	t.Helper()

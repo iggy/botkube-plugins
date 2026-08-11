@@ -13,6 +13,7 @@ import (
 	"github.com/gocarina/gocsv"
 	"github.com/google/uuid"
 	"github.com/olekukonko/tablewriter"
+	"github.com/olekukonko/tablewriter/tw"
 	"github.com/sirupsen/logrus"
 	"gopkg.in/yaml.v3"
 
@@ -226,7 +227,7 @@ func (t *ThreadMate) GetActivity(cmd *ActivityCmd, message executor.Message) api
 			ongoing = append(ongoing, *section)
 		}
 		if len(ongoing) > 0 {
-			ongoing[0].Base.Header = "⏳ Ongoing support threads"
+			ongoing[0].Header = "⏳ Ongoing support threads"
 		}
 	}
 	var resolved []api.Section
@@ -240,7 +241,7 @@ func (t *ThreadMate) GetActivity(cmd *ActivityCmd, message executor.Message) api
 			resolved = append(resolved, *section)
 		}
 		if len(resolved) > 0 {
-			resolved[0].Base.Header = "✅ Resolved support threads"
+			resolved[0].Header = "✅ Resolved support threads"
 		}
 	}
 
@@ -463,12 +464,23 @@ func (t *ThreadMate) Export(export *ExportCmd) api.Message {
 			data = append(data, []string{extractIDFromMention(item.MessageContext.User.Mention), item.MessageContext.User.DisplayName, item.MessageContext.URL, item.MessageContext.Text, item.Assignee.ID, item.Assignee.DisplayName, item.ResolvedBy.ID, item.ResolvedBy.DisplayName, item.StartedAt.String()})
 		}
 		var markdownTable bytes.Buffer
-		table := tablewriter.NewWriter(&markdownTable)
-		table.SetHeader([]string{"User ID", "User Display Name", "Message URL", "Message Text", "Assignee ID", "Assignee Display Name", "Resolved By ID", "Resolved By Display Name", "Started At"})
-		table.SetBorders(tablewriter.Border{Left: true, Top: false, Right: true, Bottom: false})
-		table.SetCenterSeparator("|")
-		table.AppendBulk(data)
-		table.Render()
+		table := tablewriter.NewTable(&markdownTable,
+			tablewriter.WithHeader([]string{"User ID", "User Display Name", "Message URL", "Message Text", "Assignee ID", "Assignee Display Name", "Resolved By ID", "Resolved By Display Name", "Started At"}),
+			tablewriter.WithRendition(tw.Rendition{
+				Borders: tw.Border{Left: tw.On, Top: tw.Off, Right: tw.On, Bottom: tw.Off},
+				Symbols: tw.NewSymbols(tw.StyleMarkdown),
+			}),
+			tablewriter.WithHeaderAlignment(tw.AlignCenter),
+			tablewriter.WithRowAlignment(tw.AlignLeft),
+		)
+		if err := table.Append(data); err != nil {
+			t.log.WithError(err).Error("Failed to append data to markdown export")
+			return api.NewPlaintextMessage("Failed to export", false)
+		}
+		if err := table.Render(); err != nil {
+			t.log.WithError(err).Error("Failed to render markdown export")
+			return api.NewPlaintextMessage("Failed to export", false)
+		}
 
 		return api.NewCodeBlockMessage(markdownTable.String(), false)
 	default:

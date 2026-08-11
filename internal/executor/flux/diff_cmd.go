@@ -34,7 +34,7 @@ const (
 	defaultGHDiffCommentHeader             = "Merging this pull request will introduce the following changes:"
 	ghHDiffCommentHeaderWithClusterNameTpl = "Merging this pull request will trigger updates to the %s cluster, introducing the following changes:"
 
-	requiredGHRefErrMsg = "The --github-ref flag is required to perform diff operation. It can be one of: pr number, full pr url, or branch name."
+	requiredGHRefErrMsg = "the --github-ref flag is required to perform diff operation. It can be one of: pr number, full pr url, or branch name"
 )
 
 var gitHubDiffCommentTpl = heredoc.Doc(`
@@ -110,7 +110,7 @@ func (k *KustomizeDiffCmdService) Run(ctx context.Context, diffCmd *DiffCommand,
 	switch {
 	case diffCmd.Artifact != nil:
 		return executor.ExecuteOutput{}, errors.New("artifact diffing is not supported")
-	case diffCmd.KustomizationCommandAliases.Get() != nil:
+	case diffCmd.Get() != nil:
 		return k.runKustomizeDiff(ctx, diffCmd, kubeConfigPath, kubeConfigBytes, cfg)
 	case diffCmd.GitHub != nil && diffCmd.GitHub.Comment != nil:
 		return k.postGitHubComment(ctx, diffCmd, cfg)
@@ -158,7 +158,7 @@ func (k *KustomizeDiffCmdService) postGitHubComment(ctx context.Context, diffCmd
 }
 
 func (k *KustomizeDiffCmdService) runKustomizeDiff(ctx context.Context, diffCmd *DiffCommand, kubeConfigPath string, kubeConfigBytes []byte, cfg Config) (executor.ExecuteOutput, error) {
-	kustomizeDiff := diffCmd.KustomizationCommandAliases.Get()
+	kustomizeDiff := diffCmd.Get()
 
 	if kustomizeDiff.GitHubRef == "" {
 		return executor.ExecuteOutput{}, errors.New(requiredGHRefErrMsg)

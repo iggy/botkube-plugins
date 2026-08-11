@@ -24,7 +24,7 @@ type InstallCommand struct {
 // Validate validates that all installation parameters are valid.
 func (i InstallCommand) Validate() error {
 	if strings.HasPrefix(i.Chart, "oci://") {
-		return errors.New("Installing Helm chart from OCI registry is not supported.")
+		return errors.New("installing Helm chart from OCI registry is not supported")
 	}
 	if err := returnErrorOfAllSetFlags(i.NotSupportedInstallFlags); err != nil {
 		return err

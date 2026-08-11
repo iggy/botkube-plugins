@@ -24,7 +24,7 @@ func (c *Config) Validate() error {
 	switch c.HelmDriver {
 	case "configmap", "secret", "memory", "":
 	default:
-		return fmt.Errorf("The %s is invalid. Allowed values are configmap, secret, memory.", c.HelmDriver)
+		return fmt.Errorf("the %s is invalid. Allowed values are configmap, secret, memory", c.HelmDriver)
 	}
 	return nil
 }

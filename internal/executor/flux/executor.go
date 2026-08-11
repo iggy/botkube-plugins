@@ -148,7 +148,7 @@ func (d *Executor) Execute(ctx context.Context, in executor.ExecuteInput) (execu
 		}))
 		if err != nil {
 			if isDeleteConfirmationErr(err) {
-				return "", deleteConfirmErr
+				return "", errDeleteConfirm
 			}
 
 			log.WithError(err).WithField("command", command.ToExecute).Error("failed to run command")
