@@ -1,3 +1,5 @@
+version: 2
+
 before:
   hooks:
     - go mod download
@@ -23,15 +25,15 @@ builds:
 
 archives:
   <range .>    
-  - builds: [<.Name>]
-    id: <.Name>
+  - id: <.Name>
+    ids: [<.Name>]
     files:
       - none*
     name_template: "{{ .Binary }}"
   <end>
 
 snapshot:
-  name_template: 'v{{ .Version }}'
+  version_template: 'v{{ .Version }}'
 
 release:
   # If set to true, will not auto-publish the release.
@@ -39,4 +41,4 @@ release:
   prerelease: auto
 
 changelog:
-  skip: false
+  disable: true

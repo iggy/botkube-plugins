@@ -13,7 +13,7 @@ import (
 // deleteConfirmPhase represent a confirmation phase for deletion. Taken from flux: v2.0.1.
 const deleteConfirmPhase = "Are you sure you want to delete"
 
-var deleteConfirmErr = errors.New("To delete the resource, please explicitly include the -s or --silent flag in your command")
+var errDeleteConfirm = errors.New("to delete the resource, please explicitly include the -s or --silent flag in your command")
 
 // escapePositionals add '--' after known keyword. Example:
 //

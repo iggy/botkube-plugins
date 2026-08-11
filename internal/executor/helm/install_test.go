@@ -27,7 +27,7 @@ func TestValidateNotSupportedFlags(t *testing.T) {
 				WaitForJobs: true,
 			},
 			errMsg: heredoc.Doc(`
-					Those flags are not supported by the Botkube Helm Plugin:
+					those flags are not supported by the Botkube Helm Plugin:
 						* --atomic
 						* --ca-file
 						* --cert-file
@@ -37,7 +37,7 @@ func TestValidateNotSupportedFlags(t *testing.T) {
 						* -f,--values
 						* --wait
 						* --wait-for-jobs
-					Please remove them.`),
+					Please remove them`),
 		},
 		{
 			name: "3 flags set",
@@ -48,19 +48,19 @@ func TestValidateNotSupportedFlags(t *testing.T) {
 				SetFile: []string{"file"},
 			},
 			errMsg: heredoc.Doc(`
-					Those flags are not supported by the Botkube Helm Plugin:
+					those flags are not supported by the Botkube Helm Plugin:
 						* --atomic
 						* --ca-file
 						* --key-file
 						* --set-file
-					Please remove them.`),
+					Please remove them`),
 		},
 		{
 			name: "1 flags set",
 			flags: NotSupportedInstallFlags{
 				Atomic: true,
 			},
-			errMsg: `The "--atomic" flag is not supported by the Botkube Helm plugin. Please remove it.`,
+			errMsg: `the "--atomic" flag is not supported by the Botkube Helm plugin. Please remove it`,
 		},
 	}
 	for _, tc := range tests {

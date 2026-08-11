@@ -130,6 +130,7 @@ var notFrequentlyUpdatedContentPrefixes = []string{
 }
 
 func removeFrequentlyUpdatedContent(log logrus.FieldLogger) error {
+	//nolint:gosec // G122: content dir is a fixed directory under this repo, not attacker-controlled
 	return filepath.WalkDir(contentDir, func(path string, d os.DirEntry, err error) error {
 		if err != nil {
 			return err
@@ -260,7 +261,7 @@ func (f *contentFetcher) filePathForURL(inURL string) (string, error) {
 
 	prefix := parsedInURL.Host
 	urlPath := strings.Trim(parsedInURL.Path, "/")
-	urlPath = strings.Replace(urlPath, "/", "__", -1)
+	urlPath = strings.ReplaceAll(urlPath, "/", "__")
 
 	fileName := prefix
 	if urlPath != "" {

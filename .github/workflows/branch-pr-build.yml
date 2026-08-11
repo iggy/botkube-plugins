@@ -28,18 +28,12 @@ jobs:
         uses: actions/setup-go@v5
         with:
           go-version-file: 'go.mod'
-          # When the files to be extracted are already present,
-          # tar extraction in Golangci Lint fails with the "File exists"
-          # errors. These files appear to be present because of
-          # cache in setup-go, on disabling the cache we are no more seeing
-          # such error. Cache is to be enabled once the fix is available for
-          # this issue:
-          # https://github.com/golangci/golangci-lint-action/issues/807
           cache: false
 
       - name: "Check code quality"
-        uses: golangci/golangci-lint-action@v3
+        uses: golangci/golangci-lint-action@v7
         with:
+          version: v2.12.2
           args: --timeout=${{ env.GOLANGCI_LINT_TIMEOUT }}
 
   test:
@@ -75,11 +69,11 @@ jobs:
           cache: true
 
       - name: Install GoReleaser
-        uses: goreleaser/goreleaser-action@v5
+        uses: goreleaser/goreleaser-action@v6
         with:
           install-only: true
           version: latest
-          
+
       - name: Build plugins and generate plugins index.yaml
         env:
           PLUGIN_DOWNLOAD_URL_BASE_PATH: ""

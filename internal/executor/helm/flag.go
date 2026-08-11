@@ -42,7 +42,7 @@ func returnErrorOfAllSetFlags(in any) error {
 
 func newUnsupportedFlagsError(flags []string) error {
 	if len(flags) == 1 {
-		return fmt.Errorf("The %q flag is not supported by the Botkube Helm plugin. Please remove it.", flags[0])
+		return fmt.Errorf("the %q flag is not supported by the Botkube Helm plugin. Please remove it", flags[0])
 	}
 
 	points := make([]string, len(flags))
@@ -51,6 +51,6 @@ func newUnsupportedFlagsError(flags []string) error {
 	}
 
 	return fmt.Errorf(
-		"Those flags are not supported by the Botkube Helm Plugin:\n\t%s\nPlease remove them.",
+		"those flags are not supported by the Botkube Helm Plugin:\n\t%s\nPlease remove them",
 		strings.Join(points, "\n\t"))
 }

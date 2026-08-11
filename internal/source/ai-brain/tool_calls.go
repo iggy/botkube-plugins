@@ -2,10 +2,10 @@ package aibrain
 
 import (
 	"fmt"
+	"sort"
 	"strings"
 
 	"github.com/sashabaranov/go-openai"
-	"golang.org/x/exp/slices"
 )
 
 // https://platform.openai.com/docs/api-reference/runs/object#runs/object-tools
@@ -68,7 +68,7 @@ func printUsedTools(usedTools map[string]struct{}) string {
 	for name := range usedTools {
 		outputToolNames = append(outputToolNames, name)
 	}
-	slices.Sort(outputToolNames)
+	sort.Strings(outputToolNames)
 
 	return fmt.Sprintf("ℹ️ **Sources used:** %s", strings.Join(outputToolNames, " | "))
 }

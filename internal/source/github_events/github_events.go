@@ -66,7 +66,7 @@ func normalizeRepos(in []RepositoryConfig) (map[string]matchCriteria, map[string
 	for _, repo := range in {
 		split := strings.Split(repo.Name, "/")
 		if len(split) != 2 {
-			return nil, nil, fmt.Errorf(`Wrong repository name. Expected pattern "owner/repository", got %q`, repo.Name)
+			return nil, nil, fmt.Errorf(`wrong repository name. Expected pattern "owner/repository", got %q`, repo.Name)
 		}
 
 		existing := repos[repo.Name]
@@ -292,7 +292,10 @@ func (w *Watcher) List(ctx context.Context, owner string, repo string, opts *git
 // must be a struct whose fields may contain "url" tags.
 func addOptions(s string, opts interface{}) (string, error) {
 	v := reflect.ValueOf(opts)
-	if v.Kind() == reflect.Ptr && v.IsNil() {
+	if !v.IsValid() {
+		return s, nil
+	}
+	if v.Kind() == reflect.Pointer && v.IsNil() {
 		return s, nil
 	}
 

@@ -331,7 +331,7 @@ func (i *assistant) handleStatusCompleted(ctx context.Context, run openai.Run, p
 	defer span.End()
 
 	limit := 1
-	msgList, err := i.openaiClient.ListMessage(ctx, run.ThreadID, &limit, nil, nil, nil)
+	msgList, err := i.openaiClient.ListMessage(ctx, run.ThreadID, &limit, nil, nil, nil, nil)
 	if err != nil {
 		err = fmt.Errorf("while getting assistant messages response: %w", err)
 		span.RecordError(err)

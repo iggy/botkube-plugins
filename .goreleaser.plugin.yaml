@@ -1,5 +1,7 @@
 # The code has been automatically generated and should not be modified directly. To update, run 'make gen-plugins-goreleaser' from the root directory of this repository.
 
+version: 2
+
 before:
   hooks:
     - go mod download
@@ -173,75 +175,75 @@ builds:
 
 archives:
       
-  - builds: [ai]
-    id: ai
+  - id: ai
+    ids: [ai]
     files:
       - none*
     name_template: "{{ .Binary }}"
       
-  - builds: [exec]
-    id: exec
+  - id: exec
+    ids: [exec]
     files:
       - none*
     name_template: "{{ .Binary }}"
       
-  - builds: [flux]
-    id: flux
+  - id: flux
+    ids: [flux]
     files:
       - none*
     name_template: "{{ .Binary }}"
       
-  - builds: [gh]
-    id: gh
+  - id: gh
+    ids: [gh]
     files:
       - none*
     name_template: "{{ .Binary }}"
       
-  - builds: [helm]
-    id: helm
+  - id: helm
+    ids: [helm]
     files:
       - none*
     name_template: "{{ .Binary }}"
       
-  - builds: [thread-mate]
-    id: thread-mate
+  - id: thread-mate
+    ids: [thread-mate]
     files:
       - none*
     name_template: "{{ .Binary }}"
       
-  - builds: [ai-brain]
-    id: ai-brain
+  - id: ai-brain
+    ids: [ai-brain]
     files:
       - none*
     name_template: "{{ .Binary }}"
       
-  - builds: [argocd]
-    id: argocd
+  - id: argocd
+    ids: [argocd]
     files:
       - none*
     name_template: "{{ .Binary }}"
       
-  - builds: [github-events]
-    id: github-events
+  - id: github-events
+    ids: [github-events]
     files:
       - none*
     name_template: "{{ .Binary }}"
       
-  - builds: [keptn]
-    id: keptn
+  - id: keptn
+    ids: [keptn]
     files:
       - none*
     name_template: "{{ .Binary }}"
       
-  - builds: [prometheus]
-    id: prometheus
+  - id: prometheus
+    ids: [prometheus]
     files:
       - none*
     name_template: "{{ .Binary }}"
   
 
 snapshot:
-  name_template: 'v{{ .Version }}'
+  version_template: 'v{{ .Version }}'
 
 release:
   # If set to true, will not auto-publish the release.
@@ -249,4 +251,4 @@ release:
   prerelease: auto
 
 changelog:
-  skip: false
+  disable: true
