@@ -12,20 +12,56 @@ permissions:
   contents: write
 
 jobs:
-  trigger-release:
-    name: Trigger release
+  release:
+    name: Release plugins
+    timeout-minutes: 60
     runs-on: ubuntu-latest
+
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+          cache: true
+
+      - name: Install GoReleaser
+        uses: goreleaser/goreleaser-action@v6
+        with:
+          install-only: true
+          version: v2.17.1
+
       - name: Create tag
         uses: actions/github-script@v9
         with:
-          # Unfortunately PAT is required to create a tag and in that way trigger other workflow.
-          # Read more here: https://docs.github.com/en/actions/using-workflows/triggering-a-workflow#triggering-a-workflow-from-a-workflow
-          github-token: ${{ secrets.RELEASE_GH_DEV_ACCOUNT_PAT }}
           script: |
-            github.rest.git.createRef({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              ref: 'refs/tags/${{ inputs.version }}',
-              sha: context.sha
-            })
+            const tag = '${{ inputs.version }}'
+            try {
+              await github.rest.git.createRef({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                ref: `refs/tags/${tag}`,
+                sha: context.sha
+              })
+              console.log(`Created tag ${tag}`)
+            } catch (error) {
+              if (error.status === 422) {
+                console.log(`Tag ${tag} already exists, continuing`)
+              } else {
+                throw error
+              }
+            }
+
+      - name: Build plugins and generate plugins index.yaml
+        env:
+          VERSION: "${{ inputs.version }}"
+          PLUGIN_DOWNLOAD_URL_BASE_PATH: "https://github.com/${{ github.repository }}/releases/download/${{ inputs.version }}"
+        run: |
+          make publish-plugins
+          USE_ARCHIVE=true make gen-plugin-index
+
+      - name: Upload plugins index
+        run: |
+          gh release upload ${{ inputs.version }} ./plugins-index.yaml --clobber

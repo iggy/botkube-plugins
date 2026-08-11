@@ -7,8 +7,10 @@ on:
 
 env:
   BUCKET_NAME: botkube-cloud-plugins
-  GITHUB_TOKEN: ${{ secrets.RELEASE_GH_DEV_ACCOUNT_PAT }}
   VERSION: "${{ github.ref_name }}"
+
+permissions:
+  contents: write
 
 jobs:
   release:
@@ -31,7 +33,7 @@ jobs:
         uses: goreleaser/goreleaser-action@v6
         with:
           install-only: true
-          version: latest
+          version: v2.17.1
 
       - name: Build plugins and generate plugins index.yaml
         env:
