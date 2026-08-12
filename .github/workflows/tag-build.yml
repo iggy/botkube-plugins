@@ -8,6 +8,7 @@ on:
 env:
   BUCKET_NAME: botkube-cloud-plugins
   VERSION: "${{ github.ref_name }}"
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 permissions:
   contents: write
